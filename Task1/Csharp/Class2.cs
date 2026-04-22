@@ -1,36 +1,56 @@
-﻿public class TriangleSides : ThreeNumbers
+public class Triangle : ThreeNumbers
 {
-    public TriangleSides() : base(1, 1, 1) { }
 
-    public TriangleSides(int a, int b, int c) : base(a, b, c)
+    public Triangle() : base(1, 1, 1)
     {
-        if (a <= 0 || b <= 0 || c <= 0 || a + b <= c || a + c <= b || b + c <= a)
-            throw new ArgumentException("Треугольник с такими сторонами не может существовать.");
     }
 
-    public TriangleSides(TriangleSides other) : base(other) { }
-
-    public int CalculatePerimeter()
+    public Triangle(int a, int b, int c) : base(a, b, c)
     {
-        return FirstNumber + SecondNumber + ThirdNumber;
+        if (a <= 0 || b <= 0 || c <= 0)
+        {
+            Console.WriteLine("Ошибка: стороны должны быть положительными!");
+        }
+        if (a + b <= c || a + c <= b || b + c <= a)
+        {
+            Console.WriteLine("Ошибка: треугольник нельзя построить!");
+        }
     }
 
-    public double CalculateArea()
+    public Triangle(Triangle other) : base(other)
     {
-        double p = CalculatePerimeter() / 2.0;
-        return Math.Sqrt(p * (p - FirstNumber) * (p - SecondNumber) * (p - ThirdNumber));
     }
 
-    public bool IsRightAngled()
+    public int GetPerimeter()
     {
-        int a2 = FirstNumber * FirstNumber;
-        int b2 = SecondNumber * SecondNumber;
-        int c2 = ThirdNumber * ThirdNumber;
-        return a2 + b2 == c2 || a2 + c2 == b2 || b2 + c2 == a2;
+        return Number1 + Number2 + Number3;
+    }
+
+    public double GetArea()
+    {
+        double p = GetPerimeter() / 2.0;
+        double a = Number1;
+        double b = Number2;
+        double c = Number3;
+
+        double area = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+        return area;
+    }
+
+    public bool IsRightTriangle()
+    {
+        int a = Number1;
+        int b = Number2;
+        int c = Number3;
+
+        if (a * a + b * b == c * c) return true;
+        if (a * a + c * c == b * b) return true;
+        if (b * b + c * c == a * a) return true;
+        return false;
     }
 
     public override string ToString()
     {
-        return $"Triangle sides: A = {FirstNumber}, B = {SecondNumber}, C = {ThirdNumber}";
+        return "Triangle: A = " + Number1 + ", B = " + Number2 + ", C = " + Number3;
     }
 }
