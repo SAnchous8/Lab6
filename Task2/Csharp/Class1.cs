@@ -1,118 +1,147 @@
-﻿public class LineSegment
+public class LineSegment
 {
-    private double startX;
-    private double endX;
+    private double start;
+    private double end;
 
-    public LineSegment() : this(0, 1) { }
+    public LineSegment()
+    {
+        start = 0;
+        end = 1;
+    }
 
     public LineSegment(double x1, double x2)
     {
-        startX = Math.Min(x1, x2);
-        endX = Math.Max(x1, x2);
+        if (x1 < x2)
+        {
+            start = x1;
+            end = x2;
+        }
+        else
+        {
+            start = x2;
+            end = x1;
+        }
     }
 
     public LineSegment(LineSegment other)
     {
-        startX = other.startX;
-        endX = other.endX;
+        start = other.start;
+        end = other.end;
     }
 
-    public double StartX
+    public double Start
     {
-        get { return startX; }
+        get { return start; }
         set
         {
-            if (value <= endX) startX = value;
-            else { startX = endX; endX = value; }
+            if (value <= end)
+            {
+                start = value;
+            }
+            else
+            {
+                start = end;
+                end = value;
+            }
         }
     }
 
-    public double EndX
+    public double End
     {
-        get { return endX; }
+        get { return end; }
         set
         {
-            if (value >= startX) endX = value;
-            else { endX = startX; startX = value; }
+            if (value >= start)
+            {
+                end = value;
+            }
+            else
+            {
+                end = start;
+                start = value;
+            }
         }
     }
 
-    public double Length { get { return endX - startX; } }
-
-    public bool Contains(double value)
+    public double Length
     {
-        return value >= startX && value <= endX;
+        get { return end - start; }
     }
 
-    // ===== ОБЯЗАТЕЛЬНЫЕ ОПЕРАЦИИ ПО ЗАДАНИЮ =====
-
-    // Унарная ! — длина отрезка
-    public static double operator !(LineSegment s)
+    public bool Contains(double number)
     {
-        return s.Length;
+        if (number >= start && number <= end)
+        {
+            return true;
+        }
+        return false;
     }
 
-    // Унарный ++ — увеличить границы на 1
-    public static LineSegment operator ++(LineSegment s)
+    public static double operator !(LineSegment seg)
     {
-        s.startX += 1;
-        s.endX += 1;
-        return s;
+        return seg.Length;
     }
 
-    // Явное приведение к int — целая часть startX
-    public static explicit operator int(LineSegment s)
+    public static LineSegment operator ++(LineSegment seg)
     {
-        return (int)s.startX;
+        seg.start = seg.start + 1;
+        seg.end = seg.end + 1;
+        return seg;
     }
 
-    // Неявное приведение к double — значение endX
-    public static implicit operator double(LineSegment s)
+    public static explicit operator int(LineSegment seg)
     {
-        return s.endX;
+        return (int)seg.start;
     }
 
-    // Бинарный + с int (левосторонний)
-    public static LineSegment operator +(LineSegment s, int d)
+    public static implicit operator double(LineSegment seg)
     {
-        return new LineSegment(s.startX + d, s.endX + d);
+        return seg.end;
     }
 
-    // Бинарный + с int (правосторонний)
-    public static LineSegment operator +(int d, LineSegment s)
+    public static LineSegment operator +(LineSegment seg, int d)
     {
-        return s + d;
+        return new LineSegment(seg.start + d, seg.end + d);
     }
 
-    // Бинарный < (отрезок < целое число) — проверка вхождения
-    public static bool operator <(LineSegment s, int value)
+    public static LineSegment operator +(int d, LineSegment seg)
     {
-        return s.Contains(value);
+        return seg + d;
     }
 
-    // Бинарный > — парный к <
-    public static bool operator >(LineSegment s, int value)
+    public static bool operator <(LineSegment seg, int number)
     {
-        return !(s < value);
+        return seg.Contains(number);
     }
 
-    // ===== СТАНДАРТНЫЕ ПЕРЕОПРЕДЕЛЕНИЯ =====
+    public static bool operator >(LineSegment seg, int number)
+    {
+        return !(seg < number);
+    }
 
     public override string ToString()
     {
-        return $"[{startX:F2}, {endX:F2}] (L={Length:F2})";
+        return "[" + start + ", " + end + "] длина = " + Length;
     }
 
     public override bool Equals(object obj)
     {
-        if (obj is LineSegment other)
-            return Math.Abs(startX - other.startX) < 0.0000001 &&
-                   Math.Abs(endX - other.endX) < 0.0000001;
-        return false;
+        if (obj == null)
+        {
+            return false;
+        }
+
+        LineSegment other = obj as LineSegment;
+        if (other == null)
+        {
+            return false;
+        }
+
+        return start == other.start && end == other.end;
     }
 
     public override int GetHashCode()
     {
-        return startX.GetHashCode() ^ endX.GetHashCode();
+        return start.GetHashCode() ^ end.GetHashCode();
     }
 }
