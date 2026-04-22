@@ -1,53 +1,63 @@
-﻿public class ThreeNumbers
+public class ThreeNumbers
 {
-    private int firstNumber;
-    private int secondNumber;
-    private int thirdNumber;
+    private int number1;
+    private int number2;
+    private int number3;
 
-    public ThreeNumbers() : this(0, 0, 0) { }
+    public ThreeNumbers()
+    {
+        number1 = 0;
+        number2 = 0;
+        number3 = 0;
+    }
 
     public ThreeNumbers(int a, int b, int c)
     {
-        firstNumber = a;
-        secondNumber = b;
-        thirdNumber = c;
+        number1 = a;
+        number2 = b;
+        number3 = c;
     }
 
     public ThreeNumbers(ThreeNumbers other)
     {
-        firstNumber = other.firstNumber;
-        secondNumber = other.secondNumber;
-        thirdNumber = other.thirdNumber;
+        number1 = other.number1;
+        number2 = other.number2;
+        number3 = other.number3;
     }
 
-    public int FirstNumber
+    public int Number1
     {
-        get { return firstNumber; }
-        set { firstNumber = value; }
+        get { return number1; }
+        set { number1 = value; }
     }
 
-    public int SecondNumber
+    public int Number2
     {
-        get { return secondNumber; }
-        set { secondNumber = value; }
+        get { return number2; }
+        set { number2 = value; }
     }
 
-    public int ThirdNumber
+    public int Number3
     {
-        get { return thirdNumber; }
-        set { thirdNumber = value; }
+        get { return number3; }
+        set { number3 = value; }
     }
 
     public int GetMaxLastDigit()
     {
-        int d1 = Math.Abs(firstNumber % 10);
-        int d2 = Math.Abs(secondNumber % 10);
-        int d3 = Math.Abs(thirdNumber % 10);
-        return Math.Max(d1, Math.Max(d2, d3));
+        int digit1 = Math.Abs(number1 % 10);
+        int digit2 = Math.Abs(number2 % 10);
+        int digit3 = Math.Abs(number3 % 10);
+
+        int max = digit1;
+        if (digit2 > max) max = digit2;
+        if (digit3 > max) max = digit3;
+
+        return max;
     }
 
     public override string ToString()
     {
-        return $"Numbers: [{firstNumber}, {secondNumber}, {thirdNumber}]";
+        return "Numbers: " + number1 + ", " + number2 + ", " + number3;
     }
 }
