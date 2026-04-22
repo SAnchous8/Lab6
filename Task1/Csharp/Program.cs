@@ -1,59 +1,75 @@
-﻿internal class Program
+internal class Program
 {
-    private static int ReadInt(string prompt)
+    private static int ReadInt(string message)
     {
+        int result;
+        string input;
+
         while (true)
         {
-            Console.Write(prompt);
-            string input = Console.ReadLine();
-            if (string.IsNullOrEmpty(input))
+            Console.Write(message);
+            input = Console.ReadLine();
+
+            if (input == null || input.Length == 0)
             {
-                Console.WriteLine("Ошибка: пустой ввод.");
+                Console.WriteLine("Ошибка: ввод не может быть пустым!");
                 continue;
             }
-            if (int.TryParse(input, out int result))
+
+            if (int.TryParse(input, out result))
+            {
                 return result;
-            Console.WriteLine("Ошибка: введите целое число.");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: введите целое число!");
+            }
         }
     }
 
     private static void Main()
     {
-        Console.WriteLine("=== Тестирование ThreeNumbers ===\n");
+        Console.WriteLine("=== ТЕСТ ТРЁХ ЧИСЕЛ ===");
 
-        // Базовый класс
-        int n1 = ReadInt("Число 1: ");
-        int n2 = ReadInt("Число 2: ");
-        int n3 = ReadInt("Число 3: ");
+        int n1 = ReadInt("Введите первое число: ");
+        int n2 = ReadInt("Введите второе число: ");
+        int n3 = ReadInt("Введите третье число: ");
 
         ThreeNumbers obj = new ThreeNumbers(n1, n2, n3);
-        Console.WriteLine($"Объект: {obj}");
-        Console.WriteLine($"Копия: {new ThreeNumbers(obj)}");
-        Console.WriteLine($"Макс. последняя цифра: {obj.GetMaxLastDigit()}");
 
-        obj.FirstNumber = ReadInt("\nНовое значение для первого числа: ");
-        Console.WriteLine($"Обновлён: {obj}");
-        Console.WriteLine($"Новая макс. цифра: {obj.GetMaxLastDigit()}");
+        Console.WriteLine("\nСоздан объект: " + obj);
+        Console.WriteLine("Максимальная последняя цифра: " + obj.GetMaxLastDigit());
 
-        // Дочерний класс
-        Console.WriteLine("\n=== Тестирование TriangleSides ===\n");
+        ThreeNumbers copy = new ThreeNumbers(obj);
+        Console.WriteLine("Копия: " + copy);
 
-        TriangleSides tri = null;
-        while (tri == null)
+        int newVal = ReadInt("\nВведите новое значение для первого числа: ");
+        obj.Number1 = newVal;
+        Console.WriteLine("После изменения: " + obj);
+        Console.WriteLine("Новая максимальная цифра: " + obj.GetMaxLastDigit());
+
+        Console.WriteLine("\n=== ТЕСТ ТРЕУГОЛЬНИКА ===");
+
+        int a = ReadInt("Введите сторону A: ");
+        int b = ReadInt("Введите сторону B: ");
+        int c = ReadInt("Введите сторону C: ");
+
+        Triangle tri = new Triangle(a, b, c);
+
+        Console.WriteLine("\n" + tri);
+        Console.WriteLine("Периметр: " + tri.GetPerimeter());
+        Console.WriteLine("Площадь: " + tri.GetArea());
+
+        if (tri.IsRightTriangle())
         {
-            int a = ReadInt("Сторона A: ");
-            int b = ReadInt("Сторона B: ");
-            int c = ReadInt("Сторона C: ");
-            try { tri = new TriangleSides(a, b, c); }
-            catch (ArgumentException ex) { Console.WriteLine($"Ошибка: {ex.Message}\n"); }
+            Console.WriteLine("Это прямоугольный треугольник!");
+        }
+        else
+        {
+            Console.WriteLine("Это НЕ прямоугольный треугольник");
         }
 
-        Console.WriteLine($"\nТреугольник: {tri}");
-        Console.WriteLine($"Копия: {new TriangleSides(tri)}");
-        Console.WriteLine($"Периметр: {tri.CalculatePerimeter()}");
-        Console.WriteLine($"Площадь: {tri.CalculateArea():F2}");
-        Console.WriteLine($"Прямоугольный: {(tri.IsRightAngled() ? "да" : "нет")}");
-        Console.WriteLine($"Макс. последняя цифра сторон: {tri.GetMaxLastDigit()}");
+        Console.WriteLine("Максимальная последняя цифра сторон: " + tri.GetMaxLastDigit());
 
         Console.WriteLine("\nНажмите любую клавишу...");
         Console.ReadKey();
