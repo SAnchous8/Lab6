@@ -1,70 +1,125 @@
-﻿internal class Program
+internal class Program
 {
-    private static double ReadDouble(string prompt)
+    private static double ReadDouble(string message)
     {
+        double result;
+        string input;
+
         while (true)
         {
-            Console.Write(prompt);
-            string input = Console.ReadLine();
+            Console.Write(message);
+            input = Console.ReadLine();
+
             if (string.IsNullOrEmpty(input))
             {
-                Console.WriteLine("Ошибка: пустой ввод.");
+                Console.WriteLine("Ошибка: ввод не может быть пустым!");
                 continue;
             }
-            if (double.TryParse(input.Replace('.', ','), out double result))
+
+            input = input.Replace('.', ',');
+
+            if (double.TryParse(input, out result))
+            {
                 return result;
-            Console.WriteLine("Ошибка: введите число.");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: введите число!");
+            }
         }
     }
 
-    private static int ReadInt(string prompt)
+    private static int ReadInt(string message)
     {
+        int result;
+        string input;
+
         while (true)
         {
-            Console.Write(prompt);
-            string input = Console.ReadLine();
+            Console.Write(message);
+            input = Console.ReadLine();
+
             if (string.IsNullOrEmpty(input))
             {
-                Console.WriteLine("Ошибка: пустой ввод.");
+                Console.WriteLine("Ошибка: ввод не может быть пустым!");
                 continue;
             }
-            if (int.TryParse(input, out int result))
+
+            if (int.TryParse(input, out result))
+            {
                 return result;
-            Console.WriteLine("Ошибка: введите целое число.");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: введите целое число!");
+            }
         }
     }
 
     private static void Main()
     {
-        Console.WriteLine("=== ТЕСТИРОВАНИЕ LineSegment ===\n");
+        Console.WriteLine("=== ТЕСТ ОТРЕЗКА С ПЕРЕГРУЗКОЙ ОПЕРАТОРОВ ===\n");
 
-        // Ввод
-        double x1 = ReadDouble("Первая координата: ");
-        double x2 = ReadDouble("Вторая координата: ");
-        LineSegment s = new LineSegment(x1, x2);
-        Console.WriteLine($"Создан отрезок: {s}\n");
+        double x = ReadDouble("Введите координату начала отрезка (x): ");
+        double y = ReadDouble("Введите координату конца отрезка (y): ");
 
-        // 1. Унарный !
-        Console.WriteLine($"!s (длина) = {!s:F2}");
+        LineSegment seg = new LineSegment(x, y);
 
-        // 2. Унарный ++
-        Console.WriteLine($"До ++:    {s}");
-        s++;
-        Console.WriteLine($"После ++:  {s}");
+        Console.WriteLine("\nСоздан отрезок: " + seg);
 
-        // 3. Приведение типов
-        Console.WriteLine($"\n(int)s     = {(int)s} (целая часть StartX)");
-        Console.WriteLine($"(double)s  = {(double)s:F2} (значение EndX)");
+        double length = !seg;
+        Console.WriteLine("Длина отрезка (оператор !): " + length);
 
-        // 4. Бинарный + с int
+        Console.WriteLine("\nДо ++: " + seg);
+        seg++;
+        Console.WriteLine("После ++: " + seg);
+
+        int intX = (int)seg;
+        double doubleY = seg;
+
+        Console.WriteLine("\nЯвное приведение (int)seg = " + intX + " (целая часть start)");
+        Console.WriteLine("Неявное приведение double = " + doubleY + " (значение end)");
+
         int d = ReadInt("\nВведите целое число для сдвига: ");
-        Console.WriteLine($"s + {d}     = {s + d}");
-        Console.WriteLine($"{d} + s     = {d + s}");
 
-        // 5. Оператор < (проверка вхождения)
-        int test = ReadInt("\nВведите число для проверки вхождения: ");
-        Console.WriteLine($"s < {test}   = {s < test} (число {(s < test ? "принадлежит" : "НЕ принадлежит")} отрезку)");
-        Console.WriteLine($"s > {test}   = {s > test}");
+        LineSegment shifted1 = seg + d;
+        LineSegment shifted2 = d + seg;
+
+        Console.WriteLine("seg + " + d + " = " + shifted1);
+        Console.WriteLine(d + " + seg = " + shifted2);
+
+        int testNumber = ReadInt("\nВведите целое число для проверки вхождения в отрезок: ");
+
+        if (seg < testNumber)
+        {
+            Console.WriteLine("Число " + testNumber + " ПРИНАДЛЕЖИТ отрезку (seg < " + testNumber + " = true)");
+        }
+        else
+        {
+            Console.WriteLine("Число " + testNumber + " НЕ принадлежит отрезку (seg < " + testNumber + " = false)");
+        }
+
+        if (seg > testNumber)
+        {
+            Console.WriteLine("Оператор >: число " + testNumber + " НЕ принадлежит отрезку");
+        }
+        else
+        {
+            Console.WriteLine("Оператор >: число " + testNumber + " ПРИНАДЛЕЖИТ отрезку");
+        }
+
+        LineSegment copy = new LineSegment(seg);
+        Console.WriteLine("\nКопия отрезка: " + copy);
+
+        double testDouble = ReadDouble("\nВведите дробное число для проверки через Contains: ");
+        if (seg.Contains(testDouble))
+        {
+            Console.WriteLine("Метод Contains: число " + testDouble + " ПРИНАДЛЕЖИТ отрезку");
+        }
+        else
+        {
+            Console.WriteLine("Метод Contains: число " + testDouble + " НЕ принадлежит отрезку");
+        }
 
         Console.WriteLine("\nНажмите любую клавишу...");
         Console.ReadKey();
