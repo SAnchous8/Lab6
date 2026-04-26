@@ -1,76 +1,85 @@
 public class LineSegment
 {
-    private double start;
-    private double end;
+    private double _start;
+    private double _end;
 
     public LineSegment()
     {
-        start = 0;
-        end = 1;
+        _start = 0;
+        _end = 1;
     }
 
     public LineSegment(double x1, double x2)
     {
         if (x1 < x2)
         {
-            start = x1;
-            end = x2;
+            _start = x1;
+            _end = x2;
         }
         else
         {
-            start = x2;
-            end = x1;
+            _start = x2;
+            _end = x1;
         }
     }
 
     public LineSegment(LineSegment other)
     {
-        start = other.start;
-        end = other.end;
+        _start = other._start;
+        _end = other._end;
     }
 
     public double Start
     {
-        get { return start; }
+        get
+        {
+            return _start;
+        }
         set
         {
-            if (value <= end)
+            if (value <= _end)
             {
-                start = value;
+                _start = value;
             }
             else
             {
-                start = end;
-                end = value;
+                _start = _end;
+                _end = value;
             }
         }
     }
 
     public double End
     {
-        get { return end; }
+        get 
+        { 
+            return _end;
+        }
         set
         {
-            if (value >= start)
+            if (value >= _start)
             {
-                end = value;
+                _end = value;
             }
             else
             {
-                end = start;
-                start = value;
+                _end = _start;
+                _start = value;
             }
         }
     }
 
     public double Length
     {
-        get { return end - start; }
+        get
+        {
+            return _end - _start;
+        }
     }
 
     public bool Contains(double number)
     {
-        if (number >= start && number <= end)
+        if (number >= _start && number <= _end)
         {
             return true;
         }
@@ -84,24 +93,24 @@ public class LineSegment
 
     public static LineSegment operator ++(LineSegment seg)
     {
-        seg.start = seg.start + 1;
-        seg.end = seg.end + 1;
+        seg._start = seg._start + 1;
+        seg._end = seg._end + 1;
         return seg;
     }
 
     public static explicit operator int(LineSegment seg)
     {
-        return (int)seg.start;
+        return (int)seg._start;
     }
 
     public static implicit operator double(LineSegment seg)
     {
-        return seg.end;
+        return seg._end;
     }
 
     public static LineSegment operator +(LineSegment seg, int d)
     {
-        return new LineSegment(seg.start + d, seg.end + d);
+        return new LineSegment(seg._start + d, seg._end + d);
     }
 
     public static LineSegment operator +(int d, LineSegment seg)
@@ -121,7 +130,7 @@ public class LineSegment
 
     public override string ToString()
     {
-        return "[" + start + ", " + end + "] длина = " + Length;
+        return "[" + _start + ", " + _end + "] длина = " + Length;
     }
 
     public override bool Equals(object obj)
@@ -137,11 +146,11 @@ public class LineSegment
             return false;
         }
 
-        return start == other.start && end == other.end;
+        return _start == other._start && _end == other._end;
     }
 
     public override int GetHashCode()
     {
-        return start.GetHashCode() ^ end.GetHashCode();
+        return _start.GetHashCode() ^ _end.GetHashCode();
     }
 }
