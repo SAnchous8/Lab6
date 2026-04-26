@@ -2,8 +2,8 @@ internal class Program
 {
     private static double ReadDouble(string message)
     {
-        double result;
-        string input;
+        double result = 0;
+        string input = "";
 
         while (true)
         {
@@ -31,8 +31,8 @@ internal class Program
 
     private static int ReadInt(string message)
     {
-        int result;
-        string input;
+        int result = 0;
+        string input = "";
 
         while (true)
         {
